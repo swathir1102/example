@@ -1,0 +1,128 @@
+<%= form_with(model: course, local: true) do |f| %>
+  <% if course.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(course.errors.count, "error") %> prohibited this course from being saved:</h2>
+
+      <ul>
+      <% course.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%if f.object.image.present? %>
+  <div class="form-group row">
+        <%= image_tag(f.object.image.url(:medium))%>
+  </div>
+  <% end %>
+
+  <div class="form-group row">
+    <%= f.label :image, class: "col-sm-2 col-form-label" %>
+    <div class="col-sm-10"><%= f.file_field :image ,class: "form-control" %></div>
+  </div>
+
+  <div class="form-group row">
+    <%= f.label :category_id , class: "col-sm-2 col-form-label"%>
+    <div class="col-sm-10"><%= f.collection_select :category_id, Category.all, :id, :name, {prompt: "Select a category"}, {class: "form-control"} %></div>
+  </div>
+
+  <div class="form-group row">
+    <div class="col-sm-2"><%= f.label :title , class: "col-form-label"%></div>
+    <div class="col-sm-10"><%= f.text_field :title, id: :course_title , placeholder: "ex. Agile Software Development",class: "form-control"%></div>
+  </div>
+
+  <div class="form-group row">
+    <%= f.label :objective , class: "col-sm-2 col-form-label"%>
+    <div class="col-sm-10"><%= f.text_area :objective, id: :course_objective , placeholder: "ex. What you'll learn : 1. The key agile ideas 2. Agile principles, roles, practices, and artifacts.... ",class: "form-control"%></div>
+  </div>
+
+  <div class="form-group row">
+    <%= f.label :description , class: "col-sm-2 col-form-label"%>
+    <div class="col-sm-10"><%= f.text_area :description, id: :course_description , placeholder: "ex. About this course : Agile methodology has taken the software development.... ",class: "form-control"%></div>
+  </div>
+
+<!--  <div class="form-group row">-->
+    <%#= f.label :instructor , class: "col-sm-2 col-form-label"%>
+<!--    <div class="col-sm-10"><%#= f.text_field :instructor, id: :course_instructor , placeholder: "ex. Prof. Bertrand Meyer",class: "form-control"%></div>-->
+<!--  </div>-->
+
+  <div class="form-group row">
+    <%= f.label :length, class: "col-sm-2 col-form-label" %>
+    <div class="col-sm-4"><%= f.number_field :length, id: :course_length, in: 1..99, step: 1 , placeholder: "1-99", class: "form-control" %></div>
+    <div class="col-sm-6">week(s)</div>
+  </div>
+
+  <div class="form-group row">
+    <%= f.label :effort, class: "col-sm-2 col-form-label" %>
+    <div class="col-sm-4"><%= f.number_field :effort, id: :course_effort, in: 1..99, step: 1, placeholder: "1-99", class: "form-control" %></div>
+    <div class="col-sm-6">hours per week</div>
+  </div>
+
+  <div class="form-group row">
+    <%= f.label :price, class: "col-sm-2 col-form-label" %>
+    <div class="col-sm-10"><%= f.text_field :price, id: :course_price, placeholder: "ex. FREE, Add a Verified Certificate for $150 USD", class: "form-control" %></div>
+  </div>
+
+  <div class="form-group row">
+    <%= f.label :institution, class: "col-sm-2 col-form-label" %>
+    <div class="col-sm-10"><%= f.text_field :institution, id: :course_institution, placeholder: "ex. Microsoft, UC San DiegoX, UC BerkeleyX", class: "form-control" %></div>
+  </div>
+
+  <div class="form-group row">
+    <%= f.label :level, class: "col-sm-2 col-form-label" %>
+    <div class="col-sm-10"><%= f.select :level, [['Introductory', 'Introductory'],
+                                                    ['Intermediate', 'Intermediate'],
+                                                    ['Advanced', 'Advanced']], {prompt: "Select level"}, {class: "form-control"} %></div>
+  </div>
+
+  <div class="form-group row">
+    <%= f.label :languages, class: "col-sm-2 col-form-label" %>
+    <div class="col-sm-10"><%= f.select :languages, [['Chinese', 'Chinese'],
+                                                        ['English', 'English'],
+                                                        ['Japanese', 'Japanese'],
+                                                        ['Thai', 'Thai']], {prompt: "Select level"}, {class: "form-control"} %></div>
+  </div>
+
+  <div class="form-group row">
+    <%= f.label :video_transcript, class: "col-sm-2 col-form-label" %>
+    <div class="col-sm-10"><%= f.select :videots, [['Chinese', 'Chinese'],
+                                                        ['English', 'English'],
+                                                        ['Japanese', 'Japanese'],
+                                                        ['Thai', 'Thai']], {prompt: "Select level"}, {class: "form-control"} %></div>
+  </div>
+
+  <div class="form-group row">
+    <%= f.label :prerequisites, class: "col-sm-2 col-form-label" %>
+    <div class="col-sm-10"><%= f.text_area :prerequisites, id: :course_prerequisites, placeholder: "ex. None, Programming.... ", class: "form-control" %></div>
+  </div>
+
+
+    <div class="pdfdocs">
+      <%= f.fields_for :pdfdocs do |pdfdoc| %>
+        <%= render 'pdfdoc_fields', f: pdfdoc , class: "form-control" %>
+      <% end %>
+    </div>
+
+    <div class="link" style="margin-bottom: 10px">
+      <%= link_to_add_association 'Add PDF', f, :pdfdocs,  class: "btn btn-primary" %>
+    </div>
+
+
+  <div class="youtubes">
+    <%= f.fields_for :youtubes do |youtube| %>
+      <%= render 'youtube_fields', f: youtube, class: "form-control" %>
+    <% end %>
+  </div>
+
+  <div class="link" style="margin-bottom: 10px">
+    <%= link_to_add_association 'Add Youtube', f, :youtubes, class: "btn btn-primary" %>
+  </div>
+
+
+  <div class="btn-group" role="group" aria-label="Basic example">
+    <%= f.submit class: "btn btn-outline-success"%>
+    <%= link_to 'Back', courses_path ,class: "btn btn-info"%>
+  </div>
+
+<% end %>

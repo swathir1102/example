@@ -1,0 +1,38 @@
+<div class="card" style="margin-top: 10px">
+      <div id="blog" class="card-header">
+          <h3 class="lead" align= "center">Latest Discussions</h3>
+      </div>
+        <% @discussions.each do |discussion| %>
+          <div class="card-body" style="padding-bottom: 0px;">
+            <div class="col-sm-1">
+              <%= gravatar_image_tag(discussion.user.email, class:'border-radius-50', size: 48, alt: discussion.user.username) %> 
+            </div> 
+            <div class="col-md">
+              <%= link_to discussion do %>
+                <h3 class="title"><%= discussion.title %></h3>
+              <% end %>
+              <div class="container">
+                <%= truncate(strip_markdown(discussion.content), length: 140) %>
+                <p><em><small>Posted <%= time_ago_in_words(discussion.created_at) %> ago in
+                <% if discussion.course %>
+                  <%= link_to discussion.course.title, discussion.course %>
+                <% end %>
+                by <%= discussion.user.username %>
+                </small></em></p>
+              </div>
+            </div>
+
+            <div class="row" style="margin-top: 10px;">
+              <div class="btn-group" role="group" aria-label="Basic example" style="margin-left: 15px">
+                <% if discussion_author(discussion) || current_user.admin? || current_user.member? %>
+                    <%= link_to 'Edit', edit_discussion_path(discussion), class: "btn btn-outline-warning" %>
+                    <%= link_to 'Delete', discussion, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
+                <% end %>
+              </div>
+            </div>
+
+        <hr style="height: 12px; border: 0; box-shadow: inset 0 12px 12px -12px rgba(0, 0, 0, 0.5);" >
+    </div>
+  <% end %>
+</div>
+

@@ -1,0 +1,27 @@
+<%= form_for @enrollment, url: enrollment_update_path(:id => @enrollment.id) do |f| %>
+
+  <div class="container" style="margin-top: 30px;">
+    <div class="card">
+      <div class="card-header"><h3>Grade Student</h3></div>
+      <div class="card-body">
+        <div class="form-group row">
+          <%= f.label :grade, class: "col-sm-2 col-form-label" %>
+          <%= f.select :grade, [['A', 'A'],
+                                ['B+', 'B+'],
+                                ['B', 'B'],
+                                ['C+', 'C+'],
+                                ['C', 'C'],
+                                ['D+', 'D+'],
+                                ['D', 'D'],
+                                ['F', 'F']], {prompt: "Select Grade"}, {class: "col-sm-10 form-control"} %>
+        </div>
+
+        <div class="btn-group" role="group" aria-label="Basic example">
+          <%= f.submit "Grading", class: "btn btn-outline-success" %>
+          <%= link_to 'Back', courses_path, class: "btn btn-info" %>
+        </div>
+
+      </div>
+<% end %>
+</div>
+</div>
